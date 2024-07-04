@@ -50,6 +50,22 @@ export class User {
 
   @Prop({ default: Date.now })
   updatedAt: Date;
+
+  @Prop({ required: true, default: 'user' })
+  @IsNotEmpty()
+  @IsString()
+  role: string;
+
+  // Virtual property for id
+  id: string;
 }
 
 export const userSchema = SchemaFactory.createForClass(User);
+
+userSchema.virtual('id').get(function () {
+  return this._id.toHexString();
+});
+
+userSchema.set('toJSON', {
+  virtuals: true,
+});

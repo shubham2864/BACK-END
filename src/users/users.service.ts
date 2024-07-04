@@ -9,26 +9,34 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtPayload } from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async read(id: string): Promise<User> {
-    try {
-      let user;
-      if (id) {
-        user = await this.userModel.findById(id);
-      } else {
-        user = await this.userModel.find();
-      }
+  async read(id: string): Promise<User | User[]> {
+    if (id) {
+      const user = await this.userModel.findById(id).exec();
       if (!user) {
-        throw new NotFoundException(`User not found`);
+        throw new NotFoundException(`User with id ${id} not found`);
       }
       return user;
-    } catch (error) {
-      console.log(error);
+    } else {
+      return this.userModel.find().exec();
     }
+  }
+
+  async findById(id: string): Promise<User> {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user;
   }
 
   async register(createUserDto: CreateUserDto): Promise<User> {
@@ -41,26 +49,33 @@ export class UsersService {
     return createUser.save();
   }
 
-  async validateUser(email: string, password: string): Promise<User> {
+  async validateUser(email: string, password: string): Promise<string> {
     const user = await this.userModel.findOne({ email }).exec();
-    if (!user) {
-      throw new NotFoundException('User not found');
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload: JwtPayload = {
+        email: user.email,
+        role: user.role,
+        id: user._id,
+      };
+      return this.jwtService.sign(payload);
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+    throw new UnauthorizedException('Invalid credentials');
+  }
+
+  async validateUserByJwt(payload: JwtPayload): Promise<User> {
+    const user = await this.userModel.findOne({ email: payload.email }).exec();
+    if (!user) {
+      throw new UnauthorizedException('Invalid token');
     }
     return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const existingUser = await this.userModel.findByIdAndUpdate(
-      id,
-      updateUserDto,
-      { new: true },
-    );
+    const existingUser = await this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
     if (!existingUser) {
-      throw new NotFoundException(`User #${id} not found`);
+      throw new NotFoundException(`User with id ${id} not found`);
     }
     console.log(existingUser);
     return existingUser;
@@ -69,8 +84,9 @@ export class UsersService {
   async delete(id: string): Promise<User> {
     const deletedUser = await this.userModel.findByIdAndDelete(id);
     if (!deletedUser) {
-      throw new NotFoundException(`User #${id} not found`);
+      throw new NotFoundException(`User with id ${id} not found`);
     }
     return deletedUser;
   }
+
 }
