@@ -21,6 +21,6 @@ import { RolesService } from '../roles/roles.service';
   ],
   controllers: [UsersController],
   providers: [UsersService, JwtStrategy, RolesGuard, RolesService],
-  exports: [UsersService],
+  exports: [UsersService,MongooseModule],
 })
 export class UsersModule {}

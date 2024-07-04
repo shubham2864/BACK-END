@@ -20,7 +20,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -44,15 +44,6 @@ export class UsersController {
     return this.usersService.register(createUserDto);
   }
 
-  @Post('login')
-  async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
-  ) {
-    const token = await this.usersService.validateUser(email, password);
-    return { accessToken: token };
-  }
-
   //PUT
   @UseGuards(JwtAuthGuard)
   @Put(':id')
@@ -68,7 +59,6 @@ export class UsersController {
     }
     return this.usersService.update(id, updateUserDto);
   }
-
 
   //DELETE
   @UseGuards(JwtAuthGuard, RolesGuard)

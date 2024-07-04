@@ -45,21 +45,7 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
     });
-    console.log(createUser);
     return createUser.save();
-  }
-
-  async validateUser(email: string, password: string): Promise<string> {
-    const user = await this.userModel.findOne({ email }).exec();
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const payload: JwtPayload = {
-        email: user.email,
-        role: user.role,
-        id: user._id,
-      };
-      return this.jwtService.sign(payload);
-    }
-    throw new UnauthorizedException('Invalid credentials');
   }
 
   async validateUserByJwt(payload: JwtPayload): Promise<User> {
@@ -88,5 +74,4 @@ export class UsersService {
     }
     return deletedUser;
   }
-
 }
