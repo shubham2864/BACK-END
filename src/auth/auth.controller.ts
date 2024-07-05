@@ -9,7 +9,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() createAuthDto: CreateAuthDto) {
-    const token = await this.authService.validateUser(createAuthDto);
+    const token = await this.authService.login(createAuthDto);
     return { accessToken: token };
   }
 }

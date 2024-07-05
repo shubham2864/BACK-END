@@ -17,7 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(createAuthDto: CreateAuthDto): Promise<string> {
+  async login(createAuthDto: CreateAuthDto): Promise<string> {
     const { email, password } = createAuthDto;
     const user = await this.userModel.findOne({ email }).exec();
     if (user && (await bcrypt.compare(password, user.password))) {

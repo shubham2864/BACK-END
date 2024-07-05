@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength, Matches } from 'class-validator';
 
+//To Check Login credentials
 export class CreateAuthDto {
     @IsEmail()
     email: string;
