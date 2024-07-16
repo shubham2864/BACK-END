@@ -7,6 +7,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService)
   const port = configService.get<number>('APP_PORT') || 3002
+
+  // Enable CORS
+  app.enableCors({
+    origin: 'http://localhost:3002', // Frontend URL
+    credentials: true, // Allow cookies
+  });
+  
   app.useGlobalPipes(new ValidationPipe())
   await app.listen(port);
   console.log(`Application is running on: ${await app.getUrl()}`);

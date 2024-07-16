@@ -6,19 +6,28 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from 'src/users/users.module';
+import { UsersService } from 'src/users/users.service';
+import { EmailService } from 'src/email/email.service';
+import { RolesGuard } from './guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { RedisModule } from './storage/redis.module';
 
 @Module({
   imports: [
+    RedisModule,
     PassportModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '10m' },
     }),
     UsersModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, UsersService, EmailService,{
+    provide: APP_GUARD,
+    useClass: RolesGuard,
+  },],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

@@ -7,13 +7,15 @@ import {
   MinLength,
 } from 'class-validator';
 
+export type UserDocument = User & Document & { _id: any };
+
 @Schema()
 export class User {
   @Prop({ required: true, unique: true })
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
-  username: string;
+  userName: string;
 
   @Prop({ required: true, unique: true })
   @IsNotEmpty()
@@ -35,23 +37,13 @@ export class User {
   })
   confirmPassword: string;
 
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  firstName: string;
-
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
-
   @Prop({ default: Date.now })
   createdAt: Date;
 
   @Prop({ default: Date.now })
   updatedAt: Date;
 
-  @Prop({ required: true, default: 'user' })
+  @Prop({ required: false, default: 'user' })
   @IsNotEmpty()
   @IsString()
   role: string;

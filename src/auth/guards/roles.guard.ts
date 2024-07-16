@@ -28,6 +28,13 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { user } = request;
 
+    console.log('RolesGuard: user from request:', user);
+
+    if (!user || !user.id) {
+      console.log('RolesGuard: user is undefined or user.id is missing');
+      throw new UnauthorizedException();
+    }
+    
     const userEntity = await this.userService.findById(user.id);
 
     if (!userEntity) {

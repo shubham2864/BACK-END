@@ -37,11 +37,26 @@ export class UsersController {
     return await this.usersService.read(id);
   }
 
+  //Profile
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  async getProfile(@Req() req: Request) {
+    const userId = req.user.id;
+    return this.usersService.findById(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('profile')
+  async updateProfile(@Req() req: Request, @Body() updateUserDto: UpdateUserDto) {
+    const userId = req.user.id;
+    return this.usersService.update(userId, updateUserDto);
+  }
+
   //POST
-  @Post('register')
+  @Post('signup')
   @UsePipes(ValidatePasswordPipe)
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.register(createUserDto);
+  async signup(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 
   //PUT
@@ -65,6 +80,8 @@ export class UsersController {
   @Roles('admin')
   @Delete(':id')
   async delete(@Param('id') id: string) {
+    console.log(id)
     return this.usersService.delete(id);
   }
 }
+

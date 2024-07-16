@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, MinLength, Matches, IsString } from 'class-validat
 export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(4)
-  username: string;
+  userName: string;
 
   @IsEmail()
   email: string;
@@ -21,16 +21,4 @@ export class CreateUserDto {
     message: 'password too weak',
   })
   confirmPassword: string;
-
-  @IsNotEmpty()
-  @IsString()
-  firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  role: string;
 }

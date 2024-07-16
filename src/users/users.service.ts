@@ -39,7 +39,12 @@ export class UsersService {
     return user;
   }
 
-  async register(createUserDto: CreateUserDto): Promise<User> {
+  async findByEmail(email: string): Promise<User | undefined> {
+    return await this.userModel.findOne({ email }).exec();
+  }
+
+  //Signup
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const createUser = new this.userModel({
       ...createUserDto,
@@ -63,7 +68,6 @@ export class UsersService {
     if (!existingUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    console.log(existingUser);
     return existingUser;
   }
 
@@ -73,5 +77,15 @@ export class UsersService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return deletedUser;
+  }
+
+  async updatePassword(id: string, newPassword: string): Promise<void> {
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    user.password = newPassword;
+    await user.save();
   }
 }
