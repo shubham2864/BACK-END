@@ -11,12 +11,19 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtPayload } from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
+import { EmailService } from 'src/email/email.service';
+import * as jwt from 'jsonwebtoken';
+import { jwtConstants } from 'src/auth/jwt/jwt.constants';
+import { RedisService } from 'src/auth/storage/redis.service';
+import { create } from 'domain';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
+    private readonly redisService: RedisService,
   ) {}
 
   async read(id: string): Promise<User | User[]> {
@@ -44,14 +51,53 @@ export class UsersService {
   }
 
   //Signup
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+  async register(createUserDto: CreateUserDto): Promise<any> {
+    const { email, password, userName } = createUserDto;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const createUser = new this.userModel({
       ...createUserDto,
-      password: hashedPassword,
+      isVerified: false,
+      password: hashedPassword
+    }) 
+
+    const payload = { email,userName };
+    const token = this.jwtService.sign(payload, {
+      secret: jwtConstants.secret,
+      expiresIn: '1h',
     });
-    return createUser.save();
+    console.log(token)
+    const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
+    const subject = 'Email Verification';
+    const text = `Please verify your email by clicking on the following link: ${verificationLink}`;
+
+    try {
+      await this.emailService.sendMail(email, subject, text);
+      createUser.save()
+      console.log("email sended")
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+      throw new Error('Failed to send verification email');
+    }
   }
+
+  async verifyEmail(token: string): Promise<any> {
+    try {
+      const decoded = this.jwtService.verify(token, { secret: jwtConstants.secret });
+      const user = await this.userModel.findOne({ email: decoded.email });
+      if (!user) {
+        throw new UnauthorizedException('Invalid or expired token');
+      }
+  
+      user.isVerified = true;
+      await user.save();
+      return user;
+    } catch (error) {
+      console.error('Invalid or expired token:', error);
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
+  
 
   async validateUserByJwt(payload: JwtPayload): Promise<User> {
     const user = await this.userModel.findOne({ email: payload.email }).exec();

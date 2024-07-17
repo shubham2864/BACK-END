@@ -27,20 +27,25 @@ export class AuthService {
   ) {}
 
   //LOGIN
-  async validateUser(loginAuthDto: LoginAuthDto): Promise<{ access_token: string; userName: string }>{
+  async validateUser(
+    loginAuthDto: LoginAuthDto,
+  ): Promise<{ access_token: string; userName: string }> {
     const { email, password } = loginAuthDto;
     const user = await this.userModel.findOne({ email }).exec();
     if (user && (await bcrypt.compare(password, user.password))) {
+      if (!user.isVerified) {
+        throw new UnauthorizedException('Email not verified');
+      }
       const payload: JwtPayload = {
         email: user.email,
         role: user.role,
         id: user.id,
-        userName: user.userName
+        userName: user.userName,
       };
       const token = this.jwtService.sign(payload);
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       await this.redisService.set(email, otp, 300);
-
+      console.log(token)
       await this.emailService.sendMail(
         user.email,
         'Your OTP Code',
@@ -49,10 +54,12 @@ export class AuthService {
 
       return {
         access_token: token,
-        userName: user.userName
+        userName: user.userName,
       };
     }
-    throw new UnauthorizedException('Invalid credentials');
+    throw new UnauthorizedException(
+      'Invalid credentials or email not verified',
+    );
   }
 
   //RESET PASSWORD
@@ -78,7 +85,7 @@ export class AuthService {
 
   async resetPassword(token: string, newPassword: string): Promise<void> {
     const user = await this.validatePasswordResetToken(token);
-    console.log(user)
+    console.log(user);
     if (!user) {
       throw new NotFoundException('Invalid or expired token');
     }
@@ -127,11 +134,18 @@ export class AuthService {
     }
   }
 
+  //OTP VERIFICATION.
   async verifyOtp(email: string, otp: string): Promise<void> {
     const storedOtp = await this.redisService.get(email);
     if (storedOtp !== otp) {
       throw new UnauthorizedException('Invalid OTP');
     }
     await this.redisService.delete(email);
+  }
+
+  //LOGOUT
+  async logout(token: string): Promise<void> {
+    // Add the token to the blacklist
+    await this.redisService.set(`blacklist_${token}`, token, 3600); // Token blacklisted for 1 hour (example)
   }
 }

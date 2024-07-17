@@ -1,8 +1,17 @@
-import { IsEmail, IsNotEmpty, MinLength, Matches, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  Matches,
+  IsString,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
-  @MinLength(4)
+  @MinLength(6)
+  @Matches(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]*$/, {
+    message: 'userName must contain letters and numbers without any spaces',
+  })
   userName: string;
 
   @IsEmail()

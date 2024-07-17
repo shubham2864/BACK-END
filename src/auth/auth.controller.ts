@@ -1,4 +1,13 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UnauthorizedException, UseGuards, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  UnauthorizedException,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { LoginAuthDto } from './dto/create-auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
@@ -8,20 +17,25 @@ import { JwtPayload } from './jwt/jwt-payload.interface';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  //LOGIN
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() loginAuthDto: LoginAuthDto) {
-    const user = await this.authService.validateUser(loginAuthDto);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+  async login(@Body() loginAuthDto: LoginAuthDto): Promise<any> {
+    try {
+      const user = await this.authService.validateUser(loginAuthDto);
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException(
+        'Invalid credentials or email not verified',
+      );
     }
-    return user;
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('send-email')
   async sendPasswordResetEmail(@Body('token') token: string) {
-    await this.authService.sendPasswordResetEmail(token)
+    await this.authService.sendPasswordResetEmail(token);
     return { message: 'Email send successfully' };
   }
 
@@ -35,6 +49,7 @@ export class AuthController {
     return { message: 'Password reset successfully' };
   }
 
+  //OTP
   @UseGuards(JwtAuthGuard)
   @Post('request-otp')
   async requestOtp(@Req() req) {
@@ -50,4 +65,16 @@ export class AuthController {
     await this.authService.verifyOtp(email, otp);
     return { message: 'OTP verified successfully' };
   }
+
+  // //LOGOUT
+  // @HttpCode(HttpStatus.OK)
+  // @Post('logout')
+  // async logout(@Req() req: Request) {
+  //   const token = req.headers.authorization?.split(' ')[1];
+  //   if (token) {
+  //     await this.authService.logout(token);
+  //     return { message: 'Logout successful' };
+  //   }
+  //   throw new UnauthorizedException('No token provided');
+  // }
 }

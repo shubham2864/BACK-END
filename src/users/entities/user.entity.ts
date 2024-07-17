@@ -14,7 +14,10 @@ export class User {
   @Prop({ required: true, unique: true })
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
+  @MinLength(6)
+  @Matches(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]*$/, {
+    message: 'userName must contain letters and numbers without any spaces',
+  })
   userName: string;
 
   @Prop({ required: true, unique: true })
@@ -50,6 +53,9 @@ export class User {
 
   // Virtual property for id
   id: string;
+
+  @Prop({ default: false })
+  isVerified: boolean;
 }
 
 export const userSchema = SchemaFactory.createForClass(User);
