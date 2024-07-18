@@ -2,9 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   IsEmail,
   IsNotEmpty,
+  IsNumber,
   IsString,
   Matches,
   MinLength,
+  IsOptional,
+  IsDate,
 } from 'class-validator';
 
 export type UserDocument = User & Document & { _id: any };
@@ -51,11 +54,26 @@ export class User {
   @IsString()
   role: string;
 
-  // Virtual property for id
-  id: string;
+  @Prop()
+  @IsOptional()
+  @IsString()
+  address: string;
+
+  @Prop()
+  @IsOptional()
+  @IsNumber()
+  mobileNo: number;
+
+  @Prop()
+  @IsOptional()
+  @IsDate()
+  dateOfBirth: Date;
 
   @Prop({ default: false })
   isVerified: boolean;
+
+  // Virtual property for id
+  id: string;
 }
 
 export const userSchema = SchemaFactory.createForClass(User);

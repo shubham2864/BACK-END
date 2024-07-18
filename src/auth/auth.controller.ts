@@ -11,7 +11,6 @@ import {
 import { LoginAuthDto } from './dto/create-auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
-import { JwtPayload } from './jwt/jwt-payload.interface';
 
 @Controller('auth')
 export class AuthController {

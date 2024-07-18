@@ -58,37 +58,40 @@ export class UsersService {
     const createUser = new this.userModel({
       ...createUserDto,
       isVerified: false,
-      password: hashedPassword
-    }) 
+      password: hashedPassword,
+    });
 
-    const payload = { email,userName };
+    const payload = { email, userName };
     const token = this.jwtService.sign(payload, {
       secret: jwtConstants.secret,
       expiresIn: '1h',
     });
-    console.log(token)
+    console.log(token);
     const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
     const subject = 'Email Verification';
     const text = `Please verify your email by clicking on the following link: ${verificationLink}`;
 
     try {
       await this.emailService.sendMail(email, subject, text);
-      createUser.save()
-      console.log("email sended")
+      createUser.save();
+      console.log('email sended');
     } catch (error) {
       console.error('Failed to send verification email:', error);
       throw new Error('Failed to send verification email');
     }
   }
 
+  //EMAIL VERIFICATION
   async verifyEmail(token: string): Promise<any> {
     try {
-      const decoded = this.jwtService.verify(token, { secret: jwtConstants.secret });
+      const decoded = this.jwtService.verify(token, {
+        secret: jwtConstants.secret,
+      });
       const user = await this.userModel.findOne({ email: decoded.email });
       if (!user) {
         throw new UnauthorizedException('Invalid or expired token');
       }
-  
+
       user.isVerified = true;
       await user.save();
       return user;
@@ -97,7 +100,6 @@ export class UsersService {
       throw new UnauthorizedException('Invalid or expired token');
     }
   }
-  
 
   async validateUserByJwt(payload: JwtPayload): Promise<User> {
     const user = await this.userModel.findOne({ email: payload.email }).exec();

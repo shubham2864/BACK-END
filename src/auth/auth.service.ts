@@ -44,7 +44,7 @@ export class AuthService {
       };
       const token = this.jwtService.sign(payload);
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      await this.redisService.set(email, otp, 300);
+      await this.redisService.set(email, otp, 60);
       console.log(token)
       await this.emailService.sendMail(
         user.email,

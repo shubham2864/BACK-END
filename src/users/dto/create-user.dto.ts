@@ -4,6 +4,9 @@ import {
   MinLength,
   Matches,
   IsString,
+  IsOptional,
+  IsNumber,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -14,6 +17,7 @@ export class CreateUserDto {
   })
   userName: string;
 
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -30,4 +34,16 @@ export class CreateUserDto {
     message: 'password too weak',
   })
   confirmPassword: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
+
+  @IsOptional()
+  @IsNumber()
+  mobileNo?: number;
+
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
 }
