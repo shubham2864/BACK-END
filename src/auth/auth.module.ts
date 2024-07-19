@@ -19,7 +19,7 @@ import { RedisModule } from './storage/redis.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '10m' },
+      signOptions: { expiresIn: '1hr' },
     }),
     UsersModule
   ],

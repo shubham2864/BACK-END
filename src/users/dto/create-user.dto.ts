@@ -1,3 +1,5 @@
+// src/users/dto/create-user.dto.ts
+
 import {
   IsEmail,
   IsNotEmpty,
@@ -40,8 +42,8 @@ export class CreateUserDto {
   address?: string;
 
   @IsOptional()
-  @IsNumber()
-  mobileNo?: number;
+  @IsString()
+  mobileNo?: string;
 
   @IsOptional()
   @IsDateString()

@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
   Matches,
   MinLength,
@@ -61,8 +60,8 @@ export class User {
 
   @Prop()
   @IsOptional()
-  @IsNumber()
-  mobileNo: number;
+  @IsString()
+  mobileNo: string;
 
   @Prop()
   @IsOptional()
