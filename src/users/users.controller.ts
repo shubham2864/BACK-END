@@ -113,7 +113,7 @@ export class UsersController {
 
   //DELETE
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  // @Roles('admin')
   @Delete(':id')
   async delete(@Param('id') id: string) {
     console.log(id);

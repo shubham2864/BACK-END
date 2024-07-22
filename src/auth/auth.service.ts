@@ -83,14 +83,35 @@ export class AuthService {
     }
   }
 
-  async resetPassword(token: string, newPassword: string): Promise<void> {
-    const user = await this.validatePasswordResetToken(token);
-    console.log(user);
+  async sendResetPasswordEmail(email: string): Promise<void> {
+    const user = await this.usersService.findByEmail(email);
     if (!user) {
+      throw new NotFoundException('Email not found');
+    }
+
+    const token = this.jwtService.sign({ userId: user.id }, { expiresIn: '10m' });
+
+    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    await this.emailService.sendMail(
+      email,
+      'Reset Password',
+      `Click the link to reset your password: ${resetLink}`,
+    );
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    try {
+      const payload = this.jwtService.verify(token);
+      const user = await this.usersService.findById(payload.userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 8);
+      await this.usersService.updatePassword(user.id, hashedPassword);
+    } catch (error) {
       throw new NotFoundException('Invalid or expired token');
     }
-    const hashedPassword = await bcrypt.hash(newPassword, 8);
-    await this.usersService.updatePassword(user.id, hashedPassword);
   }
 
   private async generatePasswordResetToken(

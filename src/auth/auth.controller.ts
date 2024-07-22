@@ -48,6 +48,13 @@ export class AuthController {
     return { message: 'Password reset successfully' };
   }
 
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body('email') email: string) {
+    await this.authService.sendResetPasswordEmail(email);
+    return { message: 'If this email exists in our database, a reset password link has been sent.' };
+  }
+
   //OTP
   @UseGuards(JwtAuthGuard)
   @Post('request-otp')
@@ -64,16 +71,4 @@ export class AuthController {
     await this.authService.verifyOtp(email, otp);
     return { message: 'OTP verified successfully' };
   }
-
-  // //LOGOUT
-  // @HttpCode(HttpStatus.OK)
-  // @Post('logout')
-  // async logout(@Req() req: Request) {
-  //   const token = req.headers.authorization?.split(' ')[1];
-  //   if (token) {
-  //     await this.authService.logout(token);
-  //     return { message: 'Logout successful' };
-  //   }
-  //   throw new UnauthorizedException('No token provided');
-  // }
 }
