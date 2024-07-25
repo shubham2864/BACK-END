@@ -20,10 +20,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ValidatePasswordPipe } from './validate-password.pipe';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
-import { User } from './entities/user.entity';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('user')
 export class UsersController {
@@ -49,10 +48,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Req() req: Request): Promise<any> {
-    console.log(req + 'helloo');
     console.log(req?.user);
     const userId = req.user.id;
-    console.log(userId);
     return await this.usersService.findById(userId);
   }
 
@@ -91,9 +88,14 @@ export class UsersController {
     @Req() req: Request,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    console.log(updateUserDto)
+    console.log(updateUserDto);
     const userId = req.user.id;
-    return this.usersService.update(userId, updateUserDto);
+    const h = await this.usersService.update(userId, updateUserDto);
+    console.log(h + 'yeah');
+    return {
+      data: h,
+      msg: 'updated successfully',
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -113,7 +115,7 @@ export class UsersController {
 
   //DELETE
   @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles('admin')
+  @Roles('admin')
   @Delete(':id')
   async delete(@Param('id') id: string) {
     console.log(id);

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,11 +12,10 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtPayload } from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config'; // Import ConfigService
 import { EmailService } from 'src/email/email.service';
 import * as jwt from 'jsonwebtoken';
-import { jwtConstants } from 'src/auth/jwt/jwt.constants';
 import { RedisService } from 'src/auth/storage/redis.service';
-import { create } from 'domain';
 
 @Injectable()
 export class UsersService {
@@ -24,8 +24,10 @@ export class UsersService {
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
     private readonly redisService: RedisService,
+    private readonly configService: ConfigService,
   ) {}
 
+  //READ
   async read(id: string): Promise<User | User[]> {
     if (id) {
       const user = await this.userModel.findById(id).exec();
@@ -52,7 +54,7 @@ export class UsersService {
 
   //Signup
   async register(createUserDto: CreateUserDto): Promise<any> {
-    const { email, password, userName } = createUserDto;
+    const { email, password } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const createUser = new this.userModel({
@@ -61,12 +63,12 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    const payload = { email, userName };
+    const payload = { email };
     const token = this.jwtService.sign(payload, {
-      secret: jwtConstants.secret,
+      secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
       expiresIn: '1h',
     });
-    console.log(token);
+    console.log('shubham your token : ' + token);
     const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
     const subject = 'Email Verification';
     const text = `Please verify your email by clicking on the following link: ${verificationLink}`;
@@ -85,7 +87,7 @@ export class UsersService {
   async verifyEmail(token: string): Promise<any> {
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: jwtConstants.secret,
+        secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
       });
       const user = await this.userModel.findOne({ email: decoded.email });
       if (!user) {
@@ -101,14 +103,19 @@ export class UsersService {
     }
   }
 
+  //USER TOKEN VALIDATION
   async validateUserByJwt(payload: JwtPayload): Promise<User> {
+    console.log('validateUserByJwt payload:', payload); // Add logging
     const user = await this.userModel.findOne({ email: payload.email }).exec();
     if (!user) {
+      console.log('validateUserByJwt: user not found'); // Add logging
       throw new UnauthorizedException('Invalid token');
     }
+    console.log('validateUserByJwt: found user:', user); // Add logging
     return user;
   }
 
+  //UPDATE
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const existingUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
@@ -116,15 +123,8 @@ export class UsersService {
     if (!existingUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
+    console.log(existingUser + '1111');
     return existingUser;
-  }
-
-  async delete(id: string): Promise<User> {
-    const deletedUser = await this.userModel.findByIdAndDelete(id);
-    if (!deletedUser) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-    return deletedUser;
   }
 
   async updatePassword(id: string, newPassword: string): Promise<void> {
@@ -134,5 +134,14 @@ export class UsersService {
     }
     user.password = newPassword;
     await user.save();
+  }
+
+  //DELETE
+  async delete(id: string): Promise<User> {
+    const deletedUser = await this.userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return deletedUser;
   }
 }

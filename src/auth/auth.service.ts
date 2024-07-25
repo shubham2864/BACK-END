@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { LoginAuthDto } from './dto/create-auth.dto';
 import { JwtPayload } from 'jsonwebtoken';
@@ -10,7 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/users/entities/user.entity';
 import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from './jwt/jwt.constants';
+import { ConfigService } from '@nestjs/config'; // Import ConfigService
 import { EmailService } from 'src/email/email.service';
 import * as jwt from 'jsonwebtoken';
 import { UsersService } from 'src/users/users.service';
@@ -24,12 +20,13 @@ export class AuthService {
     private usersService: UsersService,
     private emailService: EmailService,
     private readonly redisService: RedisService,
+    private readonly configService: ConfigService,
   ) {}
 
   //LOGIN
   async validateUser(
     loginAuthDto: LoginAuthDto,
-  ): Promise<{ access_token: string; userName: string }> {
+  ): Promise<{ access_token: any}> {
     const { email, password } = loginAuthDto;
     const user = await this.userModel.findOne({ email }).exec();
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -39,8 +36,7 @@ export class AuthService {
       const payload: JwtPayload = {
         email: user.email,
         role: user.role,
-        id: user.id,
-        userName: user.userName,
+        id: user.id
       };
       const token = this.jwtService.sign(payload);
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -49,12 +45,11 @@ export class AuthService {
       await this.emailService.sendMail(
         user.email,
         'Your OTP Code',
-        `Dear ${user.userName},\n\nYour OTP code is: ${otp}\n\nPlease use this code to verify your login.`,
+        `Dear User,\n\nYour OTP code is: ${otp}\n\nPlease use this code to verify your login.`,
       );
 
       return {
-        access_token: token,
-        userName: user.userName,
+        access_token: token
       };
     }
     throw new UnauthorizedException(
@@ -65,7 +60,7 @@ export class AuthService {
   //RESET PASSWORD
   async sendPasswordResetEmail(token: string): Promise<void> {
     const decoded = this.jwtService.verify(token, {
-      secret: jwtConstants.secret,
+      secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
     });
     const user = await this.userModel.findById(decoded.id);
     if (!user) {
@@ -74,7 +69,7 @@ export class AuthService {
     const resetToken = await this.generatePasswordResetToken(user);
     const resetLink = `https://demo.com/reset-password?token=${resetToken}`;
     const subject = 'Password Reset Request';
-    const text = `Dear ${user.userName},\n\nPlease click on the following link to reset your password:\n${resetLink}\n\nIf you did not request this, please ignore this email.`;
+    const text = `Dear User,\n\nPlease click on the following link to reset your password:\n${resetLink}\n\nIf you did not request this, please ignore this email.`;
     try {
       await this.emailService.sendMail(user.email, subject, text);
     } catch (error) {
@@ -118,7 +113,7 @@ export class AuthService {
     user: UserDocument,
   ): Promise<string> {
     const payload = { userId: user._id.toHexString() };
-    return jwt.sign(payload, jwtConstants.secret, { expiresIn: '1h' });
+    return jwt.sign(payload, this.configService.get<string>('JWT_SECRET'), { expiresIn: '1h' }); // Use ConfigService
   }
 
   private async validatePasswordResetToken(
@@ -126,7 +121,7 @@ export class AuthService {
   ): Promise<UserDocument | null> {
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: jwtConstants.secret,
+        secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
       });
       const user = await this.userModel.findById(decoded.userId);
       console.log(user);
@@ -146,7 +141,7 @@ export class AuthService {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     await this.userModel.updateOne({ _id: user._id }, { otp });
     const subject = 'Your OTP Code';
-    const text = `Dear ${user.userName},\n\nYour OTP code is: ${otp}\n\nPlease use this code to verify your login.`;
+    const text = `Dear User,\n\nYour OTP code is: ${otp}\n\nPlease use this code to verify your login.`;
     try {
       await this.emailService.sendMail(user.email, subject, text);
     } catch (error) {

@@ -5,6 +5,9 @@ import mongoose from 'mongoose';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -19,8 +22,18 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
+      }),
+      inject: [ConfigService],
+    }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    AdminModule,
   ],
 })
 export class AppModule implements NestModule {

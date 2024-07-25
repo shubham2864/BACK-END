@@ -16,11 +16,34 @@ export class User {
   @Prop({ required: true, unique: true })
   @IsNotEmpty()
   @IsString()
-  @MinLength(6)
-  @Matches(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]*$/, {
-    message: 'userName must contain letters and numbers without any spaces',
-  })
-  userName: string;
+  companyName: string;
+
+  @Prop({ required: true })
+  mobileNumber: string;
+
+  @Prop()
+  website?: string;
+
+  @Prop({ required: true })
+  streetAddress: string;
+
+  @Prop()
+  streetAddress2?: string;
+
+  @Prop({ required: true })
+  city: string;
+
+  @Prop({ required: true })
+  state: string;
+
+  @Prop({ required: true })
+  zipCode: string;
+
+  @Prop({ required: true })
+  firstName: string;
+
+  @Prop({ required: true })
+  lastName: string;
 
   @Prop({ required: true, unique: true })
   @IsNotEmpty()
@@ -42,34 +65,25 @@ export class User {
   })
   confirmPassword: string;
 
-  @Prop({ default: Date.now })
-  createdAt: Date;
-
-  @Prop({ default: Date.now })
-  updatedAt: Date;
+  @Prop({ required: true })
+  phoneNumber: string;
 
   @Prop({ required: false, default: 'user' })
   @IsNotEmpty()
   @IsString()
   role: string;
 
-  @Prop()
-  @IsOptional()
-  @IsString()
-  address: string;
-
-  @Prop()
-  @IsOptional()
-  @IsString()
-  mobileNo: string;
-
-  @Prop()
-  @IsOptional()
-  @IsDate()
-  dateOfBirth: Date;
-
   @Prop({ default: false })
   isVerified: boolean;
+
+  @Prop({ default: false })
+  isBlocked: boolean;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop({ default: Date.now })
+  updatedAt: Date;
 
   // Virtual property for id
   id: string;

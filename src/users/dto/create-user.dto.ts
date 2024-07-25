@@ -9,26 +9,61 @@ import {
   IsOptional,
   IsNumber,
   IsDateString,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
   @IsNotEmpty()
-  @MinLength(6)
-  @Matches(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]*$/, {
-    message: 'userName must contain letters and numbers without any spaces',
-  })
-  userName: string;
+  companyName: string;
 
+  @IsString()
   @IsNotEmpty()
+  mobileNumber: string;
+
+  @IsString()
+  @IsOptional()
+  website?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  streetAddress: string;
+
+  @IsString()
+  @IsOptional()
+  streetAddress2?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  city: string;
+
+  @IsString()
+  @IsNotEmpty()
+  state: string;
+
+  @IsString()
+  @IsNotEmpty()
+  zipCode: string;
+
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
+  @IsString()
   @IsNotEmpty()
-  @MinLength(8)
-  @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])/, {
-    message: 'password too weak',
-  })
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phoneNumber: string;
 
   @IsNotEmpty()
   @MinLength(8)
@@ -36,16 +71,4 @@ export class CreateUserDto {
     message: 'password too weak',
   })
   confirmPassword: string;
-
-  @IsOptional()
-  @IsString()
-  address?: string;
-
-  @IsOptional()
-  @IsString()
-  mobileNo?: string;
-
-  @IsOptional()
-  @IsDateString()
-  dateOfBirth?: string;
 }
