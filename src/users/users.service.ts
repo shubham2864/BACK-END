@@ -28,6 +28,10 @@ export class UsersService {
   ) {}
 
   //READ
+  async getUsers() {
+    return this.userModel.find().exec();
+  }
+
   async read(id: string): Promise<User | User[]> {
     if (id) {
       const user = await this.userModel.findById(id).exec();
@@ -50,6 +54,16 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User | undefined> {
     return await this.userModel.findOne({ email }).exec();
+  }
+
+  async findSuggestionsByEmail(email: string): Promise<User[]> {
+    // Implement the logic to find customer suggestions by email
+    return this.userModel.find({ email: { $regex: email, $options: 'i' } }).exec();
+  }
+
+  async findCustomerByEmail(email: string): Promise<User | undefined> {
+    // Implement the logic to find customer details by email
+    return this.userModel.findOne({ email }).exec();
   }
 
   //Signup
@@ -145,3 +159,4 @@ export class UsersService {
     return deletedUser;
   }
 }
+

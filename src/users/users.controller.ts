@@ -14,6 +14,8 @@ import {
   HttpStatus,
   Query,
   Res,
+  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -45,12 +47,48 @@ export class UsersController {
   }
 
   //Profile
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
   async getProfile(@Req() req: Request): Promise<any> {
     console.log(req?.user);
     const userId = req.user.id;
     return await this.usersService.findById(userId);
+  }
+
+  @Get('suggestions')
+  async getCustomerSuggestions(@Query('email') email: string) {
+    if (!email) {
+      throw new BadRequestException('Email query parameter is required');
+    }
+
+    try {
+      const suggestions = await this.usersService.findSuggestionsByEmail(email);
+      return suggestions;
+    } catch (error) {
+      throw new NotFoundException('Customer suggestions not found');
+    }
+  }
+
+  @Get('users')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async getAllUsers() {
+    return this.usersService.getUsers();
+  }
+
+  // Endpoint to get customer details by email
+  @Get(':email')
+  async getCustomerDetails(@Param('email') email: string) {
+    try {
+      console.log(email)
+      const customer = await this.usersService.findCustomerByEmail(email);
+      if (!customer) {
+        throw new NotFoundException(`Customer with email ${email} not found`);
+      }
+      return customer.email;
+    } catch (error) {
+      throw new NotFoundException('Customer details not found');
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -70,6 +108,21 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(ValidatePasswordPipe)
   async signUp(
+    @Body() createUserDto: CreateUserDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    try {
+      await this.usersService.register(createUserDto);
+      return res.status(200).json({ message: 'signup successful' });
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
+  }
+
+  @Post('newUser')
+  @HttpCode(HttpStatus.CREATED)
+  @UsePipes(ValidatePasswordPipe)
+  async registerUser(
     @Body() createUserDto: CreateUserDto,
     @Res() res: Response,
   ): Promise<any> {

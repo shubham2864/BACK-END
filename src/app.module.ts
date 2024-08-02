@@ -7,7 +7,6 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { AdminModule } from './admin/admin.module';
     }),
     UsersModule,
     AuthModule,
-    AdminModule,
   ],
 })
 export class AppModule implements NestModule {
