@@ -29,7 +29,7 @@ export class RolesGuard implements CanActivate {
     const { user } = request;
 
     if (!user || !user.id) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('User not found');
     }
     
     const userEntity = await this.userService.findById(user.id);

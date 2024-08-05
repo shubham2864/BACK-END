@@ -9,6 +9,7 @@ import { RolesService } from '../roles/roles.service';
 import { EmailModule } from 'src/email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AdminModule } from 'src/admin/admin.module';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { AuthModule } from 'src/auth/auth.module';
     ConfigModule,
     EmailModule,
     forwardRef(() => AuthModule),
+    forwardRef(() => AdminModule),
   ],
   controllers: [UsersController],
   providers: [UsersService, JwtStrategy, RolesGuard, RolesService],

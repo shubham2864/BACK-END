@@ -50,9 +50,11 @@ export class UsersController {
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   async getProfile(@Req() req: Request): Promise<any> {
-    console.log(req?.user);
-    const userId = req.user.id;
-    return await this.usersService.findById(userId);
+    const user = await this.usersService.findById(req.user.id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user
   }
 
   @Get('suggestions')
