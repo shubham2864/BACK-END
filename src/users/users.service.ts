@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config'; // Import ConfigService
 import { EmailService } from 'src/email/email.service';
 import * as jwt from 'jsonwebtoken';
 import { RedisService } from 'src/auth/storage/redis.service';
+import { CreateNewUserDto } from './dto/create-new-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -96,6 +97,35 @@ export class UsersService {
       throw new Error('Failed to send verification email');
     }
   }
+
+  async registerUser(createNewUserDto: CreateNewUserDto): Promise<any> {
+    const { email } = createNewUserDto;
+
+    const createUser = new this.userModel({
+      ...createNewUserDto,
+      isVerified: false
+    });
+
+    const payload = { email };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
+      expiresIn: '1h',
+    });
+    console.log('shubham your token : ' + token);
+    const verificationLink = `http://localhost:3000/verify-email?token=${token}`;
+    const subject = 'Email Verification';
+    const text = `Please verify your email by clicking on the following link: ${verificationLink}`;
+
+    try {
+      await this.emailService.sendMail(email, subject, text);
+      createUser.save();
+      console.log('email sended');
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+      return error
+    }
+  }
+
 
   //EMAIL VERIFICATION
   async verifyEmail(token: string): Promise<any> {

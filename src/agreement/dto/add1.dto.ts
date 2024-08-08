@@ -33,6 +33,6 @@ export class Add1Dto {
   @IsString()
   Zip: string;
 
-  @IsOptional()
-  file: string;
+  // @IsOptional()
+  // file: string;
 }

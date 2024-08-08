@@ -13,7 +13,7 @@ import { Type } from 'class-transformer';
 
 @Schema()
 export class Add1 extends Document {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -53,9 +53,9 @@ export class Add1 extends Document {
   @IsString()
   Zip: string;
 
-  @Prop()
-  @IsOptional()
-  file: string;
+  // @Prop()
+  // @IsOptional()
+  // file: string;
 }
 
 export const Add1Schema = SchemaFactory.createForClass(Add1);
@@ -177,9 +177,9 @@ export class Quote extends Document {
   @IsNumber()
   agencyFees: number;
 
-  @Prop()
-  @IsOptional()
-  file: string;
+  // @Prop()
+  // @IsOptional()
+  // file: string;
 }
 
 export const QuoteSchema = SchemaFactory.createForClass(Quote);

@@ -23,7 +23,7 @@ import { RedisModule } from './storage/redis.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1h' },
+        signOptions: { expiresIn: '5h' },
       }),
       inject: [ConfigService],
     }),

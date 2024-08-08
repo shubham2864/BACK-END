@@ -68,7 +68,4 @@ export class QuoteDto {
   @IsNotEmpty()
   @IsNumber()
   agencyFees: number;
-
-  @IsOptional()
-  file: string;
 }

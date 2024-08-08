@@ -25,6 +25,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { CreateNewUserDto } from './dto/create-new-user.dto';
 
 @Controller('user')
 export class UsersController {
@@ -54,7 +55,7 @@ export class UsersController {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user
+    return user;
   }
 
   @Get('suggestions')
@@ -82,7 +83,7 @@ export class UsersController {
   @Get(':email')
   async getCustomerDetails(@Param('email') email: string) {
     try {
-      console.log(email)
+      console.log(email);
       const customer = await this.usersService.findCustomerByEmail(email);
       if (!customer) {
         throw new NotFoundException(`Customer with email ${email} not found`);
@@ -125,11 +126,11 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(ValidatePasswordPipe)
   async registerUser(
-    @Body() createUserDto: CreateUserDto,
+    @Body() createNewUserDto: CreateNewUserDto,
     @Res() res: Response,
   ): Promise<any> {
     try {
-      await this.usersService.register(createUserDto);
+      await this.usersService.registerUser(createNewUserDto);
       return res.status(200).json({ message: 'signup successful' });
     } catch (error) {
       return res.status(400).json({ message: error.message });

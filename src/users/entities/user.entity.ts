@@ -13,31 +13,30 @@ export type UserDocument = User & Document & { _id: any };
 
 @Schema()
 export class User {
-  @Prop({ required: true, unique: true })
+  @Prop({ unique: true })
   @IsNotEmpty()
   @IsString()
   companyName: string;
 
-  @Prop({ required: true })
+  @Prop()
   mobileNumber: string;
 
   @Prop()
   website?: string;
 
-  @Prop({ required: true })
+  @Prop()
   streetAddress: string;
 
   @Prop()
   streetAddress2?: string;
 
-  @Prop({ required: true })
+  @Prop()
   city: string;
 
-  @Prop({ required: true })
+  @Prop()
   state: string;
 
-  @Prop({ required: true })
-  zipCode: string;
+  @Prop()  zipCode: string;
 
   @Prop({ required: true })
   firstName: string;
@@ -50,7 +49,7 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
   @IsNotEmpty()
   @MinLength(8)
   @Matches(/(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])/, {
