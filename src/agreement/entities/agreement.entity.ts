@@ -13,9 +13,7 @@ import { Type } from 'class-transformer';
 
 @Schema()
 export class Add1 extends Document {
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsEmail()
+  @Prop()
   email: string;
 
   @Prop({ required: true })

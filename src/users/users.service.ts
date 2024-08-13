@@ -122,7 +122,7 @@ export class UsersService {
       console.log('email sended');
     } catch (error) {
       console.error('Failed to send verification email:', error);
-      return error
+      return "Failedd122334"
     }
   }
 
@@ -161,6 +161,7 @@ export class UsersService {
 
   //UPDATE
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    console.log("ID22",id)
     const existingUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec();
@@ -169,6 +170,16 @@ export class UsersService {
     }
     console.log(existingUser + '1111');
     return existingUser;
+  }
+
+  async updateProfile(updateProfileDto: UpdateUserDto): Promise<User> {
+    const user = await this.userModel.findOne({ email: updateProfileDto.email });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+  
+    Object.assign(user, updateProfileDto); // Update fields as per DTO
+    return await user.save();
   }
 
   async updatePassword(id: string, newPassword: string): Promise<void> {

@@ -16,6 +16,7 @@ import {
   Res,
   BadRequestException,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -88,7 +89,8 @@ export class UsersController {
       if (!customer) {
         throw new NotFoundException(`Customer with email ${email} not found`);
       }
-      return customer.email;
+      console.log(customer);
+      return customer;
     } catch (error) {
       throw new NotFoundException('Customer details not found');
     }
@@ -118,7 +120,7 @@ export class UsersController {
       await this.usersService.register(createUserDto);
       return res.status(200).json({ message: 'signup successful' });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: 'signup Un- successful' });
     }
   }
 
@@ -133,7 +135,7 @@ export class UsersController {
       await this.usersService.registerUser(createNewUserDto);
       return res.status(200).json({ message: 'signup successful' });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(400).json({ message: 'signup Un- successful' });
     }
   }
 
@@ -144,14 +146,23 @@ export class UsersController {
     @Req() req: Request,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    console.log(updateUserDto);
-    const userId = req.user.id;
-    const h = await this.usersService.update(userId, updateUserDto);
-    console.log(h + 'yeah');
-    return {
-      data: h,
-      msg: 'updated successfully',
-    };
+    // console.log(updateUserDto);
+    // const userId = req.user.id;
+    // console.log("hello i am id", userId)
+    // const h = await this.usersService.update(userId, updateUserDto);
+    // console.log(h + 'yeah');
+    // return {
+    //   data: h,
+    //   msg: 'updated successfully',
+    // };
+    const user = req.user;
+    if (user.role === 'admin' || user.email === updateUserDto.email) {
+      return await this.usersService.updateProfile(updateUserDto);
+    } else {
+      throw new ForbiddenException(
+        'You are not authorized to update this profile.',
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)

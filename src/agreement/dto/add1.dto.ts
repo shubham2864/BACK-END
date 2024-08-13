@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class Add1Dto {
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
+  // @IsNotEmpty()
+  // @IsEmail()
+  // email: string;
 
   @IsNotEmpty()
   @IsString()

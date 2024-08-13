@@ -24,7 +24,7 @@ import {
 
     // @IsString()
     // @IsNotEmpty()
-    companyName: string;
+    // companyName: string;
 
     @IsString()
     @IsNotEmpty()

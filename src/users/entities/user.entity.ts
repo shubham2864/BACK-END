@@ -13,7 +13,7 @@ export type UserDocument = User & Document & { _id: any };
 
 @Schema()
 export class User {
-  @Prop({ unique: true })
+  @Prop()
   @IsNotEmpty()
   @IsString()
   companyName: string;
