@@ -9,8 +9,8 @@ export class AgreementController {
   @Post()
   async create(@Body() createAgreementDto: CreateAgreementDto) {
     try {
-      console.log("hello")
-      console.log(createAgreementDto)
+      console.log('hello');
+      console.log(createAgreementDto);
       return this.agreementService.create(createAgreementDto);
     } catch (error) {
       console.log(error + 'There is an error');

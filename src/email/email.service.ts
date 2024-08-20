@@ -10,7 +10,7 @@ export class EmailService {
       service: 'gmail',
       auth: {
         user: 'shubhamjain0176@gmail.com',
-        pass: 'dbckrspkjlxqmyso',
+        pass: 'ezuqjxhkacdgavwy',
       },
     });
   }

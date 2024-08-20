@@ -8,35 +8,12 @@ import {
   IsOptional,
   IsDate,
 } from 'class-validator';
-
+import { Types } from 'mongoose';
+import * as uniqueValidator from 'mongoose-unique-validator';
 export type UserDocument = User & Document & { _id: any };
 
 @Schema()
 export class User {
-  @Prop()
-  @IsNotEmpty()
-  @IsString()
-  companyName: string;
-
-  @Prop()
-  mobileNumber: string;
-
-  @Prop()
-  website?: string;
-
-  @Prop()
-  streetAddress: string;
-
-  @Prop()
-  streetAddress2?: string;
-
-  @Prop()
-  city: string;
-
-  @Prop()
-  state: string;
-
-  @Prop()  zipCode: string;
 
   @Prop({ required: true })
   firstName: string;
@@ -66,6 +43,9 @@ export class User {
 
   @Prop({ required: true })
   phoneNumber: string;
+
+  @Prop({ required: true, type: Types.ObjectId, ref: 'Company' })
+  companyId: Types.ObjectId;
 
   @Prop({ required: false, default: 'user' })
   @IsNotEmpty()
@@ -97,3 +77,5 @@ userSchema.virtual('id').get(function () {
 userSchema.set('toJSON', {
   virtuals: true,
 });
+
+userSchema.plugin(uniqueValidator);

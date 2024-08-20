@@ -6,40 +6,9 @@ import {
   IsString,
   IsOptional,
 } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  companyName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  mobileNumber: string;
-
-  @IsString()
-  @IsOptional()
-  website?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  streetAddress: string;
-
-  @IsString()
-  @IsOptional()
-  streetAddress2?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  city: string;
-
-  @IsString()
-  @IsNotEmpty()
-  state: string;
-
-  @IsString()
-  @IsNotEmpty()
-  zipCode: string;
-
   @IsString()
   @IsNotEmpty()
   firstName: string;
@@ -66,4 +35,8 @@ export class CreateUserDto {
     message: 'password too weak',
   })
   confirmPassword: string;
+
+  @IsNotEmpty()
+  @IsString()
+  companyId: Types.ObjectId;
 }

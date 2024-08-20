@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { AgreementModule } from './agreement/agreement.module';
+import { CompaniesModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AgreementModule } from './agreement/agreement.module';
     AuthModule,
     AdminModule,
     AgreementModule,
+    CompaniesModule
   ],
 })
 export class AppModule implements NestModule {

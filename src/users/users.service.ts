@@ -59,7 +59,9 @@ export class UsersService {
 
   async findSuggestionsByEmail(email: string): Promise<User[]> {
     // Implement the logic to find customer suggestions by email
-    return this.userModel.find({ email: { $regex: email, $options: 'i' } }).exec();
+    return this.userModel
+      .find({ email: { $regex: email, $options: 'i' } })
+      .exec();
   }
 
   async findCustomerByEmail(email: string): Promise<User | undefined> {
@@ -69,13 +71,14 @@ export class UsersService {
 
   //Signup
   async register(createUserDto: CreateUserDto): Promise<any> {
-    const { email, password } = createUserDto;
+    const { email, password, companyId } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const createUser = new this.userModel({
       ...createUserDto,
       isVerified: false,
       password: hashedPassword,
+      companyId: companyId,
     });
 
     const payload = { email };
@@ -89,8 +92,9 @@ export class UsersService {
     const text = `Please verify your email by clicking on the following link: ${verificationLink}`;
 
     try {
+      console.log('I came here');
+      const data = await createUser.save();
       await this.emailService.sendMail(email, subject, text);
-      createUser.save();
       console.log('email sended');
     } catch (error) {
       console.error('Failed to send verification email:', error);
@@ -103,7 +107,7 @@ export class UsersService {
 
     const createUser = new this.userModel({
       ...createNewUserDto,
-      isVerified: false
+      isVerified: false,
     });
 
     const payload = { email };
@@ -118,14 +122,14 @@ export class UsersService {
 
     try {
       await this.emailService.sendMail(email, subject, text);
-      createUser.save();
+      const data = await createUser.save();
+      console.log(data, 'SURAJ');
       console.log('email sended');
     } catch (error) {
       console.error('Failed to send verification email:', error);
-      return "Failedd122334"
+      return 'Failedd122334';
     }
   }
-
 
   //EMAIL VERIFICATION
   async verifyEmail(token: string): Promise<any> {
@@ -161,7 +165,7 @@ export class UsersService {
 
   //UPDATE
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    console.log("ID22",id)
+    console.log('ID22', id);
     const existingUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec();
@@ -173,11 +177,13 @@ export class UsersService {
   }
 
   async updateProfile(updateProfileDto: UpdateUserDto): Promise<User> {
-    const user = await this.userModel.findOne({ email: updateProfileDto.email });
+    const user = await this.userModel.findOne({
+      email: updateProfileDto.email,
+    });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-  
+
     Object.assign(user, updateProfileDto); // Update fields as per DTO
     return await user.save();
   }
@@ -200,4 +206,3 @@ export class UsersService {
     return deletedUser;
   }
 }
-

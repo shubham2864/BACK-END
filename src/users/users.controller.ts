@@ -117,10 +117,11 @@ export class UsersController {
     @Res() res: Response,
   ): Promise<any> {
     try {
-      await this.usersService.register(createUserDto);
+      const data = await this.usersService.register(createUserDto);
+      // console.log(data)
       return res.status(200).json({ message: 'signup successful' });
     } catch (error) {
-      return res.status(400).json({ message: 'signup Un- successful' });
+      return res.status(400).json({ message: 'signup Un- successful. ' + error.message});
     }
   }
 
@@ -146,15 +147,6 @@ export class UsersController {
     @Req() req: Request,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    // console.log(updateUserDto);
-    // const userId = req.user.id;
-    // console.log("hello i am id", userId)
-    // const h = await this.usersService.update(userId, updateUserDto);
-    // console.log(h + 'yeah');
-    // return {
-    //   data: h,
-    //   msg: 'updated successfully',
-    // };
     const user = req.user;
     if (user.role === 'admin' || user.email === updateUserDto.email) {
       return await this.usersService.updateProfile(updateUserDto);

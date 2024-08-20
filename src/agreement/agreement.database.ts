@@ -8,6 +8,7 @@ export const AgreementDatabaseModule = MongooseModule.forRootAsync({
     uri: configService.get<string>('AGREEMENT_DB_CONNECTION_STRING'),
     ...getMongoOptions(configService),
   }),
+  //necessary to access the environment variables or configuration settings
   inject: [ConfigService],
 });
 
