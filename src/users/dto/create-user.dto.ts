@@ -23,11 +23,11 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  phoneNumber: string;
 
   @IsString()
   @IsNotEmpty()
-  phoneNumber: string;
+  password: string;
 
   @IsNotEmpty()
   @MinLength(8)

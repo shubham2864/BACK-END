@@ -35,6 +35,29 @@ export class CompaniesService {
     return user;
   }
 
+  async updateCompanyDetails(
+    id: string,
+    updateDetails: Partial<Company>,
+  ): Promise<Company | null> {
+    const updatedCompany = await this.companyModel
+      .findByIdAndUpdate(id, updateDetails, { new: true })
+      .exec();
+
+    if (!updatedCompany) {
+      throw new NotFoundException('Company not found');
+    }
+
+    return updatedCompany;
+  }
+
+  async findCompanyById(companyId: string): Promise<Company> {
+    const company = await this.companyModel.findById(companyId).exec();
+    if (!company) {
+      throw new NotFoundException(`Company with ID ${companyId} not found`);
+    }
+    return company;
+  }
+
   async deleteCompany(companyId: string): Promise<Company | null> {
     const deletedCompany = await this.companyModel
       .findByIdAndDelete(companyId)

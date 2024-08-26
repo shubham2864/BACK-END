@@ -1,8 +1,23 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, NotFoundException, Param, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { CompaniesService } from './company.service';
 import { Company } from './entities/company.entity';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('companies')
 export class CompaniesController {
@@ -19,12 +34,27 @@ export class CompaniesController {
   @Get(':Id')
   @UseGuards(JwtAuthGuard)
   async getCompanyProfile(@Param('Id') Id: string): Promise<any> {
-    
     const data = await this.companyService.findById(Id);
     if (!data) {
       throw new NotFoundException('Company Name not found');
     }
     return data;
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  async updateCompanyDetails(
+    @Param('id') id: string,
+    @Body() updateDetails: UpdateCompanyDto,
+  ): Promise<Company> {
+    const updatedCompany = await this.companyService.updateCompanyDetails(
+      id,
+      updateDetails,
+    );
+    if (!updatedCompany) {
+      throw new NotFoundException('Company not found');
+    }
+    return updatedCompany;
   }
 
   @Delete(':id')

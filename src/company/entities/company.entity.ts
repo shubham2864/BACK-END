@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory, getModelToken } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import * as uniqueValidator from 'mongoose-unique-validator';
 
-export type CompanyDocument = Company & Document ;
+export type CompanyDocument = Company & Document;
 
 @Schema()
 export class Company {
@@ -29,6 +29,12 @@ export class Company {
 
   @Prop({ required: true })
   zipCode: string;
+
+  @Prop()
+  taxId: string;
+
+  @Prop()
+  type: string;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

@@ -14,17 +14,16 @@ import { JwtPayload } from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config'; // Import ConfigService
 import { EmailService } from 'src/email/email.service';
-import * as jwt from 'jsonwebtoken';
-import { RedisService } from 'src/auth/storage/redis.service';
 import { CreateNewUserDto } from './dto/create-new-user.dto';
+import { newUser } from './entities/newUser.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(User.name) private newUserModel: Model<newUser>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
-    private readonly redisService: RedisService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -102,10 +101,11 @@ export class UsersService {
     }
   }
 
+  //New User
   async registerUser(createNewUserDto: CreateNewUserDto): Promise<any> {
     const { email } = createNewUserDto;
 
-    const createUser = new this.userModel({
+    const createUser = new this.newUserModel({
       ...createNewUserDto,
       isVerified: false,
     });
@@ -137,11 +137,15 @@ export class UsersService {
       const decoded = this.jwtService.verify(token, {
         secret: this.configService.get<string>('JWT_SECRET'), // Use ConfigService
       });
+      console.log(decoded);
+      console.log('shubham11111');
       const user = await this.userModel.findOne({ email: decoded.email });
+      console.log(user);
       if (!user) {
+        console.log('this is it');
         throw new UnauthorizedException('Invalid or expired token');
       }
-
+      console.log('is it this');
       user.isVerified = true;
       await user.save();
       return user;

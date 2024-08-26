@@ -39,6 +39,7 @@ export class UsersController {
     @Res() res: Response,
   ): Promise<any> {
     try {
+      console.log(token)
       await this.usersService.verifyEmail(token);
       return res.status(200).json({ message: 'Verification verified' });
     } catch (error) {
