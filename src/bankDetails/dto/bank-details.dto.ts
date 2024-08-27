@@ -3,19 +3,19 @@ import { IsNotEmpty, IsString, IsBoolean, IsOptional } from 'class-validator';
 export class CreateBankDetailsDto {
   @IsNotEmpty()
   @IsString()
-  accountTypeOperational: string;
+  accountTypeOperational?: string;
 
   @IsNotEmpty()
   @IsString()
-  operationalAccountHolderName: string;
+  operationalAccountHolderName?: string;
 
   @IsNotEmpty()
   @IsString()
-  operationalAccountNumber: string;
+  operationalAccountNumber?: string;
 
   @IsNotEmpty()
   @IsString()
-  operationalRoutingNumber: string;
+  operationalRoutingNumber?: string;
 
   @IsOptional()
   @IsString()
@@ -34,10 +34,9 @@ export class CreateBankDetailsDto {
   trustRoutingNumber?: string;
 
   @IsNotEmpty()
-  @IsBoolean()
-  sameAsOperational?: boolean;
-
-  @IsNotEmpty()
   @IsString()
-  oneTimePaymentAccount: string;
+  oneTimePaymentAccount?: string;
+
+  @IsOptional()
+  fileUrl?: string;
 }

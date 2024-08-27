@@ -1,17 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Types } from 'mongoose';
-import { Company } from "../../company/entities/company.entity"; // Import Company schema
+import { Company } from '../../company/entities/company.entity'; // Import Company schema
 import * as uniqueValidator from 'mongoose-unique-validator';
 
 @Schema()
 export class BankDetails extends Document {
-  @Prop({ required: true , unique: true, type: Types.ObjectId, ref: 'Company' })
+  @Prop({ required: true, unique: true, type: Types.ObjectId, ref: 'Company' })
   companyId: Types.ObjectId;
 
   @Prop({ required: true })
   accountTypeOperational: string;
-  
+
   @Prop({ required: true })
   operationalAccountHolderName: string;
 
@@ -38,6 +38,9 @@ export class BankDetails extends Document {
 
   @Prop({ required: true })
   oneTimePaymentAccount: string;
+
+  @Prop()
+  fileUrl?: string;
 }
 
 export const BankDetailsSchema = SchemaFactory.createForClass(BankDetails);

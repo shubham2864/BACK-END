@@ -11,6 +11,7 @@ import { AdminModule } from './admin/admin.module';
 import { AgreementModule } from './agreement/agreement.module';
 import { CompaniesModule } from './company/company.module';
 import { BankDetailsModule } from './bankDetails/banks.module';
+import { FileModule } from './commonUtils/file.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { BankDetailsModule } from './bankDetails/banks.module';
     AdminModule,
     AgreementModule,
     CompaniesModule,
-    BankDetailsModule
+    BankDetailsModule,
+    FileModule
   ],
 })
 export class AppModule implements NestModule {
@@ -54,11 +56,11 @@ function getMongoOptions(
   return {
     connectTimeoutMS: 3000,
     directConnection: false,
-    enableUtf8Validation: true,
+    // enableUtf8Validation: true,
     localThresholdMS: 15,
     maxIdleTimeMS: 0,
     maxPoolSize: 20,
-    maxConnecting: 2,
+    // maxConnecting: 2,
     minPoolSize: 0,
     serverSelectionTimeoutMS: 3000,
     ssl: false,

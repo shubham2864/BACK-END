@@ -18,11 +18,11 @@ function getMongoOptions(
   return {
     connectTimeoutMS: 3000,
     directConnection: false,
-    enableUtf8Validation: true,
+    // enableUtf8Validation: true,
     localThresholdMS: 15,
     maxIdleTimeMS: 0,
     maxPoolSize: 20,
-    maxConnecting: 2,
+    // maxConnecting: 2,
     minPoolSize: 0,
     serverSelectionTimeoutMS: 3000,
     ssl: false,

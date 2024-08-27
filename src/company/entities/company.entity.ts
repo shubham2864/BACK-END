@@ -1,8 +1,46 @@
-import { Prop, Schema, SchemaFactory, getModelToken } from '@nestjs/mongoose';
-import { Document, Model } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 import * as uniqueValidator from 'mongoose-unique-validator';
 
 export type CompanyDocument = Company & Document;
+
+@Schema()
+export class BusinessOwner {
+  @Prop()
+  firstName?: string;
+
+  @Prop()
+  lastName?: string;
+
+  @Prop()
+  email?: string;
+
+  @Prop()
+  mobileNumber?: string;
+
+  @Prop()
+  jobTitle?: string;
+
+  @Prop()
+  dateOfBirth?: string;
+
+  @Prop()
+  socialSecurityNumber?: string;
+
+  @Prop()
+  sAddress?: string;
+
+  @Prop()
+  sCity?: string;
+
+  @Prop()
+  sState?: string;
+
+  @Prop()
+  sZipCode?: string;
+}
+
+const BusinessOwnerSchema = SchemaFactory.createForClass(BusinessOwner);
 
 @Schema()
 export class Company {
@@ -35,9 +73,11 @@ export class Company {
 
   @Prop()
   type: string;
+
+  @Prop({ type: [BusinessOwnerSchema], default: [] })
+  businessOwner: BusinessOwner[];
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);
 
 CompanySchema.plugin(uniqueValidator);
-// CompanySchema.index({ "companyName": 1 }, { unique: true });
