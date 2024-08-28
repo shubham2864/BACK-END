@@ -23,6 +23,12 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 export class CompaniesController {
   constructor(private readonly companyService: CompaniesService) {}
 
+  @Get('pending')
+  @UseGuards(JwtAuthGuard)
+  async getPendingCompanies(): Promise<Company[]> {
+    return this.companyService.findPendingCompanies();
+  }
+
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async registerCompany(

@@ -27,6 +27,10 @@ export class CompaniesService {
     }
   }
 
+  async findPendingCompanies(): Promise<Company[]> {
+    return this.companyModel.find({ isVerified: false }).exec();
+  }
+
   async findById(id: string): Promise<Company> {
     const user = await this.companyModel.findById(id).exec();
     if (!user) {

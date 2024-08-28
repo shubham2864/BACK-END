@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, ValidateNested, IsArray } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, ValidateNested, IsArray, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class BusinessOwnerDto {
@@ -87,6 +87,10 @@ export class CreateCompanyDto {
   @IsOptional()
   @IsString()
   type?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isVerified?: boolean;
 
   @IsOptional()
   @IsArray()

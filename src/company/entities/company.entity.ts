@@ -76,6 +76,9 @@ export class Company {
 
   @Prop({ type: [BusinessOwnerSchema], default: [] })
   businessOwner: BusinessOwner[];
+
+  @Prop()
+  isVerified: boolean;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);
