@@ -104,7 +104,6 @@ export class UsersService {
   //New User
   async registerUser(createNewUserDto: CreateNewUserDto): Promise<any> {
     const { email } = createNewUserDto;
-
     const createUser = new this.newUserModel({
       ...createNewUserDto,
       isVerified: false,

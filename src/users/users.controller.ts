@@ -159,6 +159,19 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Put(':email')
+  async updateUserByEmail(
+    @Param('email') email: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const existingUser = await this.usersService.findCustomerByEmail(email);
+    if (!existingUser) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    return this.usersService.update(existingUser.id, updateUserDto);
+  }
+  
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @UsePipes(ValidatePasswordPipe)
   async update(

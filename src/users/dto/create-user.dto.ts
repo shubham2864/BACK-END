@@ -39,4 +39,20 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   companyId: Types.ObjectId;
+
+  @IsOptional()
+  @IsString()
+  dateOfBirth: string;
+
+  @IsOptional()
+  @IsString()
+  jobTitle: string;
+  
+  @IsOptional()
+  @IsString()
+  socialSecurityNumber: string;
+
+  @IsOptional()
+  @IsString()
+  sAddress: string;
 }

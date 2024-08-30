@@ -55,6 +55,18 @@ export class User {
   @Prop({ default: false })
   isVerified: boolean;
 
+  @Prop()
+  jobTitle: string;
+
+  @Prop()
+  dateOfBirth: string;
+
+  @Prop()
+  socialSecurityNumber: string;
+
+  @Prop()
+  sAddress: string;
+
   @Prop({ default: false })
   isBlocked: boolean;
 
