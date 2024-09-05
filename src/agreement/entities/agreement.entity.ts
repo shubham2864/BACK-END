@@ -63,7 +63,7 @@ export class Add2 extends Document {
   @Prop()
   @IsNotEmpty()
   @IsString()
-  Buisness: string;
+  BuisnessName: string;
 
   @Prop()
   @IsNotEmpty()
@@ -178,6 +178,10 @@ export class Quote extends Document {
   // @Prop()
   // @IsOptional()
   // file: string;
+
+  @Prop()
+  @IsNumber()
+  totalCost: number;
 }
 
 export const QuoteSchema = SchemaFactory.createForClass(Quote);

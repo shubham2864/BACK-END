@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class Add2Dto {
   @IsNotEmpty()
   @IsString()
-  Buisness: string;
+  BuisnessName: string;
 
   @IsNotEmpty()
   @IsString()
