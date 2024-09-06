@@ -18,4 +18,8 @@ export class AgreementService {
     const createdAgreement = new this.agreementModel(createAgreementDto);
     return createdAgreement.save();
   }
+
+  async findById(id: string): Promise<Agreement> {
+    return this.agreementModel.findById(id).exec();
+  }
 }

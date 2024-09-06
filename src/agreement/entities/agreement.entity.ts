@@ -19,12 +19,12 @@ export class Add1 extends Document {
   @Prop({ required: true })
   @IsNotEmpty()
   @IsString()
-  firstname: string;
+  firstName: string;
 
   @Prop({ required: true })
   @IsNotEmpty()
   @IsString()
-  lastname: string;
+  lastName: string;
 
   @Prop({ required: true })
   @IsNotEmpty()
@@ -34,7 +34,7 @@ export class Add1 extends Document {
   @Prop({ required: true })
   @IsNotEmpty()
   @IsString()
-  Address: string;
+  address: string;
 
   @Prop({ required: true })
   @IsNotEmpty()
@@ -49,7 +49,7 @@ export class Add1 extends Document {
   @Prop({ required: true })
   @IsNotEmpty()
   @IsString()
-  Zip: string;
+  zip: string;
 
   // @Prop()
   // @IsOptional()
@@ -63,32 +63,32 @@ export class Add2 extends Document {
   @Prop()
   @IsNotEmpty()
   @IsString()
-  BuisnessName: string;
+  BuisnessName?: string;
 
   @Prop()
   @IsNotEmpty()
   @IsString()
-  Address: string;
+  Address?: string;
 
   @Prop()
   @IsNotEmpty()
   @IsString()
-  Address2: string;
+  Address2?: string;
 
   @Prop()
   @IsNotEmpty()
   @IsString()
-  city: string;
+  city?: string;
 
   @Prop()
   @IsNotEmpty()
   @IsString()
-  state: string;
+  state?: string;
 
   @Prop()
   @IsNotEmpty()
   @IsString()
-  Zip: string;
+  Zip?: string;
 }
 
 export const Add2Schema = SchemaFactory.createForClass(Add2);
@@ -191,8 +191,8 @@ export class Agreement extends Document {
   @Prop({ type: Add1Schema, required: true })
   Add1: Add1;
 
-  @Prop({ type: [Add2Schema], required: true })
-  Add2: Add2[];
+  @Prop({ type: [Add2Schema]})
+  Add2?: Add2[];
 
   @Prop({ type: [QuoteSchema], required: true })
   quotes: Quote[];

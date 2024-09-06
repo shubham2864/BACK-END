@@ -1,17 +1,17 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class Add1Dto {
-  // @IsNotEmpty()
-  // @IsEmail()
-  // email: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()
-  firstname: string;
+  firstName: string;
 
   @IsNotEmpty()
   @IsString()
-  lastname: string;
+  lastName: string;
 
   @IsNotEmpty()
   @IsString()
@@ -19,7 +19,7 @@ export class Add1Dto {
 
   @IsNotEmpty()
   @IsString()
-  Address: string;
+  address: string;
 
   @IsNotEmpty()
   @IsString()
@@ -31,7 +31,7 @@ export class Add1Dto {
 
   @IsNotEmpty()
   @IsString()
-  Zip: string;
+  zip: string;
 
   // @IsOptional()
   // file: string;

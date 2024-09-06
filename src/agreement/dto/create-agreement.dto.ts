@@ -12,7 +12,7 @@ export class CreateAgreementDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Add2Dto)
-  Add2: Add2Dto[];
+  Add2?: Add2Dto[];
 
   @IsArray()
   @ValidateNested({ each: true })
