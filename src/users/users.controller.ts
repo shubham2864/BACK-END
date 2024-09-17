@@ -163,7 +163,7 @@ export class UsersController {
   async updateUserByEmail(
     @Param('email') email: string,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ) { 
     const existingUser = await this.usersService.findCustomerByEmail(email);
     if (!existingUser) {
       throw new NotFoundException(`User with email ${email} not found`);

@@ -6,12 +6,14 @@ import {
   Agreement,
   AgreementSchema,
 } from '../agreement/entities/agreement.entity';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Agreement.name, schema: AgreementSchema },
     ]),
+    EmailModule
   ],
   controllers: [AgreementController],
   providers: [AgreementService],
