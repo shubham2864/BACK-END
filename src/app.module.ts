@@ -12,6 +12,7 @@ import { AgreementModule } from './agreement/agreement.module';
 import { CompaniesModule } from './company/company.module';
 import { BankDetailsModule } from './bankDetails/banks.module';
 import { FileModule } from './commonUtils/file.module';
+import { pdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { FileModule } from './commonUtils/file.module';
     AgreementModule,
     CompaniesModule,
     BankDetailsModule,
-    FileModule
+    FileModule,
+    pdfModule
   ],
 })
 export class AppModule implements NestModule {
