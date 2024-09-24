@@ -7,20 +7,20 @@ import * as puppeteer from 'puppeteer';
 @Controller('pdf')
 export class PdfController {
   @Post()
-  async generateAgreementPDF(@Body() data: any, @Res() res: Response) {
+  async generatePDF(@Body() data: any, @Res() res: Response) {
     try {
-      console.log('its pdf fileeee.....');
-      // Render the EJS template with dynamic data
-      // Use process.cwd() to get the correct base path
-      const templatePath = path.join(
-        process.cwd(),
-        'src',
-        'template',
-        'agreement.ejs',
-      );
+      console.log('Generating PDF...');
+
+      // Determine which template to use based on the documentType
+      const templatePath =
+        data.documentType === 'loanPolicy'
+          ? path.join(process.cwd(), 'src', 'template', 'loanTemplate.ejs')
+          : path.join(process.cwd(), 'src', 'template', 'agreement.ejs');
+
+      // Render the correct EJS template with dynamic data
       const html = await ejs.renderFile(templatePath, data);
 
-      // Generate PDF using puppeteer
+      // Generate PDF using Puppeteer
       const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -32,13 +32,11 @@ export class PdfController {
 
       // Send the PDF as a response
       res.set({
-        'Content-Type': 'application/pdf', // Ensure this is correct
-        'Content-Disposition': `attachment; filename=agreement-${data._id}.pdf`,
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename=${data.documentType}-${data._id}.pdf`,
       });
-      console.log('pdf generated.!!');
-      console.log('PDF buffer length:', pdfBuffer.length);
       console.log('PDF generation successful, sending response...');
-      return res.status(200).send(Buffer.from(pdfBuffer));  // Ensure this is sent as binary
+      return res.status(200).send(Buffer.from(pdfBuffer)); // Ensure this is sent as binary
     } catch (error) {
       console.error('Error generating PDF:', error);
       res.status(500).send('Error generating PDF');

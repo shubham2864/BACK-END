@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link type="text/css" id="dark-mode" rel="stylesheet" href="">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .paymentdue-status {
+            background-color: rgb(219, 234, 254);
+            color: rgb(30, 64, 175);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 8px;
+        }
+
+        .paid-status {
+            background-color: rgba(34, 197, 94, 0.16);
+            color: rgb(17, 141, 87);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    
+    <table width="860" border="0" cellspacing="0" cellpadding="0"
+        style="margin:auto; font-weight: 500; font-family:'Helvetica', sans-serif; color:#000; font-size:13px; padding: 15px 30px;line-height: 1.4; background-color: #fff;">
+        <tbody>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td style="font-size: 22px;">Loan terms per policy</td>
+                            <td style="text-align: right;">
+                                <img src="https://app.link-finance.com/logo.png" alt="logo" width="35px"
+                                    style="display: inline-block;vertical-align: middle;" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td height="15px"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td valign="top" border="0" cellspacing="0" cellpadding="0" style="width: 390px;">
+                                    <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                        style="background-color: #F9FAFB;border-radius: 10px;padding: 15px;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p
+                                                        style="font-size: 11px;font-weight: 600;color: rgb(99, 115, 129);text-transform: uppercase;letter-spacing: 1px;margin: 0;">
+                                                        AGENCY DETAILS</p>
+                                                    <span style="height: 10px; display: block;"></span>
+                                                    <p style="font-size: 14px;font-weight: 600;margin:0;">Guardian
+                                                        Insurance</p>
+                                                    <p style="margin: 0;font-size: 12px;">14 Center St , North Easton MA
+                                                        02356
+                                                    </p>
+                                                    <span style="height: 10px; display: block;"></span>
+                                                    <p style="margin: 0;font-size: 12px;">
+                                                        admin@guardian-insure.com
+                                                    </p>
+                                                    <p style="margin: 0;font-size: 12px;">+15089691980
+                                                    </p>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td width="10px" valign="top" style="display: block;"></td>
+                                <td valign="top" style="width: 390px;">
+                                    <table border="0" cellspacing="0" cellpadding="0" width="100%"
+                                        style="background-color: #F9FAFB;border-radius: 10px;padding: 15px;">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p
+                                                        style="font-size: 11px;font-weight: 600;color: rgb(99, 115, 129);text-transform: uppercase;letter-spacing: 1px;margin: 0;">
+                                                        INSUrgb(99, 115, 129) DETAILS</p>
+                                                    <span style="height: 10px; display: block;"></span>
+                                                    <p style="font-size: 14px;font-weight: 600;margin:0;">YEM LLC</p>
+                                                    <p style="margin: 0;font-size: 12px;">150 Corporate Park Drive,
+                                                        Pembroke MA
+                                                        02359
+                                                    </p>
+                                                    <span style="height: 10px; display: block;"></span>
+                                                    <p style="margin: 0;font-size: 12px;">andrew@soundcheck-studios.com
+                                                    </p>
+                                                    <p style="margin: 0;font-size: 12px;">
+                                                        +17814995383
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td height="15px"></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 11%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                COVERAGE</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 14.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                EFFECTIVE DATE</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 16.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                QUOTE OR POLICY NO.</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 15.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                CARRIER/WHOLESALER</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 15.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                TOTAL PREMIUM</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 13.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">DOWN
+                                PAYMENT</th>
+                            <th style="background: #F9FAFB; border-bottom: 1px solid #c3c3c3; width: 14.28%; padding: 15px 2px 2px; font-size: 10px;  color: rgb(99, 115, 129);text-align: right;">
+                                AMOUNT FINANCED</th>
+                        </tr>
+
+                        <tr>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                Commercial
+                                Package</td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                03/18/2024</td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                00141558
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+                                    Policy No.
+
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                James River
+                                Insurance
+                                Company
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+                                    Risk Placement
+                                    Services, Inc
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $71,560.00
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                    Policy fee: $375.00
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                    
+                                    Agency fee:
+                                   
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                  
+                                    $300.00
+                                   
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                  
+                                    Broker fee: $0.00
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                   
+                                    Taxes: $2,862.40
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                   
+                                    Other fees: $0.00
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                                $15,559.48</td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $59,537.92</td>
+                        </tr>
+
+                        <tr>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                Umbrella</td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                03/18/2024</td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                00141558
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+                                    Policy No.
+
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                James River
+                                Insurance
+                                Company
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+                                    Risk Placement
+                                    Services, Inc
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $71,560.00
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                    Policy fee: $375.00
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                    
+                                    Agency fee:
+                                   
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                  
+                                    $300.00
+                                   
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                  
+                                    Broker fee: $0.00
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                   
+                                    Taxes: $2,862.40
+                                    
+                                </span>
+                                <span style="display: block; color: rgb(99, 115, 129);font-weight: 400; font-size: 10px; ">
+
+                                   
+                                    Other fees: $0.00
+                                </span>
+                            </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                                $6,534.64 </td>
+                            <td valign="top"
+                                style="border-bottom: 1px solid #c3c3c3; padding: 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $25,338.56</td>
+                        </tr>
+
+
+                        
+                        <tr>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                            </td>
+                            <td valign="top"
+                                style="text-align: left; background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(99, 115, 129);font-weight: 600;">
+                                Documentary
+                                stamp tax:
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $0.00
+                                
+                               
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                                 </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                        </tr>
+
+
+                        <tr>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(99, 115, 129);font-weight: 600; text-align: left;">
+                                Service fees:
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $16.00
+                                
+                               
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                                 </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                        </tr>
+
+                        <tr>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(99, 115, 129);font-weight: 600; text-align: left;">
+                                Interest:
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $4,233.92
+                                
+                               
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                                 </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; border-bottom: 1px solid #c3c3c3; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                        </tr>
+
+                        <tr>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px; color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB; padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB;  padding: 10px 5px; font-size: 11px;  color: rgb(99, 115, 129);font-weight: 600; text-align: left;">
+                                Totals: 
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB;  padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $111,220.52
+                                
+                               
+                               
+                            </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB;  padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $22,094.12
+                                 </td>
+                            <td valign="top"
+                                style="background-color: #F9FAFB;  padding: 10px 5px; font-size: 11px;  color: rgb(0, 0, 0);font-weight: 600; text-align: right;">
+                                $84,876.48 </td>
+                        </tr>
+
+
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
